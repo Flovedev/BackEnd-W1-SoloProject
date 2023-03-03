@@ -6,8 +6,8 @@
     "price": 400,
     "category": "locotronics",
     "_id": "16jqokwleshuusn",
-    "imageUrl": "",
+    "imageUrl": "localhost:3000/16jqokwleshuusn.jpg",
     "createdAt": "2023-03-03T12:10:44.710Z",
-    "updatedAt": "2023-03-03T12:20:09.342Z"
+    "updatedAt": "2023-03-03T12:58:50.293Z"
   }
 ]

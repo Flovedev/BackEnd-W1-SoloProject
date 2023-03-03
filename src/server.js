@@ -4,6 +4,7 @@ import cors from "cors";
 import { join } from "path";
 import productsRouter from "./api/products/index.js";
 import reviewsRouter from "./api/reviews/index.js";
+import filesRouter from "./api/files/index.js";
 
 const server = Express();
 const port = 3001;
@@ -15,6 +16,7 @@ server.use(Express.json());
 
 server.use("/products", productsRouter);
 server.use("/reviews", reviewsRouter);
+server.use("/products", filesRouter);
 
 server.listen(port, () => {
   console.table(listEndpoints(server));
