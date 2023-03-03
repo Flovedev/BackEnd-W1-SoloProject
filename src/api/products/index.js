@@ -56,32 +56,40 @@ productsRouter.post(
   }
 );
 
-productsRouter.put("/:id", triggerBadRequest, async (req, res, next) => {
-  try {
-    const productsArray = await getProducts();
-    const index = productsArray.findIndex((e) => e._id === req.params.id);
+productsRouter.put(
+  "/:id",
+  checkProductsSchema,
+  triggerBadRequest,
+  async (req, res, next) => {
+    try {
+      const productsArray = await getProducts();
+      const index = productsArray.findIndex((e) => e._id === req.params.id);
 
-    if (index !== -1) {
-      const oldProduct = productsArray[index];
-      const updatedProduct = {
-        ...oldProduct,
-        ...req.body,
-        updatedAt: new Date(),
-      };
+      if (index !== -1) {
+        const oldProduct = productsArray[index];
+        const updatedProduct = {
+          ...oldProduct,
+          ...req.body,
+          updatedAt: new Date(),
+        };
 
-      productsArray[index] = updatedProduct;
-      await writeProducts(productsArray);
+        productsArray[index] = updatedProduct;
+        await writeProducts(productsArray);
 
-      res.send(updatedProduct);
-    } else {
-      next(
-        createHttpError(404, `Product with the id: ${req.params.id} not found!`)
-      );
+        res.send(updatedProduct);
+      } else {
+        next(
+          createHttpError(
+            404,
+            `Product with the id: ${req.params.id} not found!`
+          )
+        );
+      }
+    } catch (error) {
+      next(next);
     }
-  } catch (error) {
-    next(next);
   }
-});
+);
 
 productsRouter.delete("/:id", triggerBadRequest, async (req, res, next) => {
   try {

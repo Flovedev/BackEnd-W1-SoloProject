@@ -1,13 +1,35 @@
 [
   {
-    "name": "lokitronix extra",
-    "description": "lokitronix master 4000",
-    "brand": "lokocuack",
-    "price": 400,
-    "category": "locotronics",
+    "name": "locosdfsdfnix",
+    "description": "lonsdfsdocix master 4000",
+    "brand": "1234lololol",
+    "price": 650,
+    "category": "locotrassdfdasdonics",
     "_id": "16jqokwleshuusn",
     "imageUrl": "localhost:3000/16jqokwleshuusn.jpg",
     "createdAt": "2023-03-03T12:10:44.710Z",
-    "updatedAt": "2023-03-03T12:58:50.293Z"
+    "updatedAt": "2023-03-03T14:26:55.495Z"
+  },
+  {
+    "name": "loconix",
+    "description": "lonocix master 4000",
+    "brand": "1234lololol",
+    "price": 600,
+    "category": "locotrasdasdonics",
+    "_id": "16jqlxslesmn5ij",
+    "imageUrl": "",
+    "createdAt": "2023-03-03T14:24:43.434Z",
+    "updatedAt": "2023-03-03T14:24:43.434Z"
+  },
+  {
+    "name": "locosdfsdfnix",
+    "description": "lonsdfsdocix master 4000",
+    "brand": "1234lololol",
+    "price": 600,
+    "category": "locotrassdfdasdonics",
+    "_id": "16jqlxslesmokm6",
+    "imageUrl": "",
+    "createdAt": "2023-03-03T14:25:49.662Z",
+    "updatedAt": "2023-03-03T14:25:49.662Z"
   }
 ]

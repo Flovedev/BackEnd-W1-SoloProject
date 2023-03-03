@@ -113,6 +113,7 @@ reviewsRouter.post(
 );
 reviewsRouter.put(
   "/:productId/reviews/:reviewId",
+  checkReviewsSchema,
   triggerBadRequest,
   async (req, res, next) => {
     const productsArray = await getProducts();
