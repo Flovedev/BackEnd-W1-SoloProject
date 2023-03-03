@@ -6,72 +6,61 @@ import createHttpError from "http-errors";
 
 const reviewsRouter = Express.Router();
 
-reviewsRouter.get(
-  "/:productId/reviews",
-  triggerBadRequest,
-  async (req, res, next) => {
-    try {
-      const productsArray = await getProducts();
-      const foundProduct = productsArray.find(
-        (e) => e._id === req.params.productId
+reviewsRouter.get("/:productId/reviews", async (req, res, next) => {
+  try {
+    const productsArray = await getProducts();
+    const foundProduct = productsArray.find(
+      (e) => e._id === req.params.productId
+    );
+
+    if (foundProduct) {
+      const reviewsArray = await getReviews();
+      res.send(reviewsArray);
+    } else {
+      next(
+        createHttpError(404, `Product with the id: ${req.params.id} not found!`)
+      );
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
+reviewsRouter.get("/:productId/reviews/:reviewId", async (req, res, next) => {
+  try {
+    const productsArray = await getProducts();
+    const foundProduct = productsArray.find(
+      (e) => e._id === req.params.productId
+    );
+
+    if (foundProduct) {
+      const reviewsArray = await getReviews();
+      const foundReview = reviewsArray.find(
+        (e) => e._id === req.params.reviewId
       );
 
-      if (foundProduct) {
-        const reviewsArray = await getReviews();
-        res.send(reviewsArray);
+      if (foundReview) {
+        res.send(foundReview);
       } else {
         next(
           createHttpError(
             404,
-            `Product with the id: ${req.params.id} not found!`
+            `Review with the id: ${req.params.reviewId} not found!`
           )
         );
       }
-    } catch (error) {
-      next(error);
-    }
-  }
-);
-
-reviewsRouter.get(
-  "/:productId/reviews/:reviewId",
-  triggerBadRequest,
-  async (req, res, next) => {
-    try {
-      const productsArray = await getProducts();
-      const foundProduct = productsArray.find(
-        (e) => e._id === req.params.productId
+    } else {
+      next(
+        createHttpError(
+          404,
+          `Product with the id: ${req.params.productId} not found!`
+        )
       );
-
-      if (foundProduct) {
-        const reviewsArray = await getReviews();
-        const foundReview = reviewsArray.find(
-          (e) => e._id === req.params.reviewId
-        );
-
-        if (foundReview) {
-          res.send(foundReview);
-        } else {
-          next(
-            createHttpError(
-              404,
-              `Review with the id: ${req.params.reviewId} not found!`
-            )
-          );
-        }
-      } else {
-        next(
-          createHttpError(
-            404,
-            `Product with the id: ${req.params.productId} not found!`
-          )
-        );
-      }
-    } catch (error) {
-      next(error);
     }
+  } catch (error) {
+    next(error);
   }
-);
+});
 
 reviewsRouter.post(
   "/:productId/reviews",
@@ -157,7 +146,6 @@ reviewsRouter.put(
 
 reviewsRouter.delete(
   "/:productId/reviews/:reviewId",
-  triggerBadRequest,
   async (req, res, next) => {
     const productsArray = await getProducts();
     const foundProduct = productsArray.find(

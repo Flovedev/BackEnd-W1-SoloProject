@@ -6,7 +6,7 @@ import { getProducts, writeProducts } from "../../lib/fs-tools.js";
 
 const productsRouter = Express.Router();
 
-productsRouter.get("/", triggerBadRequest, async (req, res, next) => {
+productsRouter.get("/", async (req, res, next) => {
   try {
     const productsArray = await getProducts();
     res.send(productsArray);
@@ -91,7 +91,7 @@ productsRouter.put(
   }
 );
 
-productsRouter.delete("/:id", triggerBadRequest, async (req, res, next) => {
+productsRouter.delete("/:id", async (req, res, next) => {
   try {
     const productsArray = await getProducts();
     const remainingProducts = productsArray.filter(
@@ -105,6 +105,27 @@ productsRouter.delete("/:id", triggerBadRequest, async (req, res, next) => {
     } else {
       next(
         createHttpError(404, `Product with the id: ${req.params.id} not found!`)
+      );
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
+productsRouter.get("/category/:filter", async (req, res, next) => {
+  try {
+    const productsArray = await getProducts();
+    const matchingProducts = productsArray.filter(
+      (e) => e.category === req.params.filter
+    );
+    if (matchingProducts.length !== 0) {
+      res.send(matchingProducts);
+    } else {
+      next(
+        createHttpError(
+          404,
+          `Category with the name: ${req.params.filter} not found!`
+        )
       );
     }
   } catch (error) {

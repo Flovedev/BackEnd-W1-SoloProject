@@ -1,12 +1,10 @@
 export const badRequestHandler = (err, req, res, next) => {
   if (err.status === 400) {
-    res
-      .status(400)
-      .send({
-        success: false,
-        message: err.message,
-        errorsList: err.errorsList.map((e) => e.msg),
-      });
+    res.status(400).send({
+      success: false,
+      message: err.message,
+      errorsList: err.errorList.map((e) => e.msg),
+    });
   } else {
     next(err);
   }
@@ -33,4 +31,9 @@ export const genericErrorHandler = (err, req, res, next) => {
   res
     .status(500)
     .send({ success: false, message: "Something happened on our side!" });
+};
+
+export const checkRequests = (req, res, next) => {
+  console.log(`Request method ${req.method} -- url ${req.url}`);
+  next();
 };

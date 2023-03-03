@@ -10,7 +10,8 @@ const reviewSchema = {
   },
   rate: {
     in: ["body"],
-    isNumber: {
+    isInt: {
+      options: { min: 1, max: 5 },
       errorMessage:
         "Rate is a mandatory field and needs to be a number between 1 and 5!",
     },
@@ -23,6 +24,7 @@ export const triggerBadRequest = (req, res, next) => {
   const errors = validationResult(req);
 
   console.log(errors.array());
+
   if (errors.isEmpty()) {
     next();
   } else {

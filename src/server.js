@@ -10,12 +10,14 @@ import {
   unauthorizedHandler,
   notfoundHandler,
   genericErrorHandler,
+  checkRequests,
 } from "./errorsHandlers.js";
 
 const server = Express();
 const port = 3001;
 const publicFolderPath = join(process.cwd(), "./public");
 
+server.use(checkRequests);
 server.use(Express.static(publicFolderPath));
 server.use(cors());
 server.use(Express.json());
