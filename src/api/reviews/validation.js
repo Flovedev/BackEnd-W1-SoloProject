@@ -23,8 +23,6 @@ export const checkReviewsSchema = checkSchema(reviewSchema);
 export const triggerBadRequest = (req, res, next) => {
   const errors = validationResult(req);
 
-  console.log(errors.array());
-
   if (errors.isEmpty()) {
     next();
   } else {
