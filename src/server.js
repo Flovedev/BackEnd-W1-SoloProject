@@ -15,7 +15,7 @@ server.use(cors());
 server.use(Express.json());
 
 server.use("/products", productsRouter);
-server.use("/reviews", reviewsRouter);
+server.use("/products", reviewsRouter);
 server.use("/products", filesRouter);
 
 server.listen(port, () => {
