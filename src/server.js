@@ -12,6 +12,9 @@ import {
   genericErrorHandler,
   checkRequests,
 } from "./errorsHandlers.js";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const server = Express();
 const port = process.env.PORT;
@@ -49,5 +52,5 @@ server.use(genericErrorHandler);
 
 server.listen(port, () => {
   console.table(listEndpoints(server));
-  console.log(`Server is running in port ${port}`);
+  console.log(`Server is running in port ${process.env.PORT}`);
 });
