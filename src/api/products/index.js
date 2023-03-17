@@ -24,7 +24,10 @@ productsRouter.get("/", async (req, res, next) => {
 
 productsRouter.get("/:id", async (req, res, next) => {
   try {
-    const foundProduct = await ProductsModel.findById(req.params.id);
+    const foundProduct = await ProductsModel.findById(req.params.id).populate({
+      path: "reviews",
+      select: "comment rate",
+    });
     if (foundProduct) {
       res.send(foundProduct);
     } else {

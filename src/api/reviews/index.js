@@ -1,11 +1,7 @@
 import Express from "express";
 import createHttpError from "http-errors";
-import mongoose from "mongoose";
 import ReviewsModel from "./model.js";
 import ProductsModel from "../products/model.js";
-
-import { checkReviewsSchema, triggerBadRequest } from "./validation.js";
-import { getReviews, writeReviews, getProducts } from "../../lib/fs-tools.js";
 
 const reviewsRouter = Express.Router();
 
