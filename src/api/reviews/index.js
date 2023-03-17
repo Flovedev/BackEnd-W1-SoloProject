@@ -68,13 +68,22 @@ reviewsRouter.get("/:productId/reviews/:reviewId", async (req, res, next) => {
 reviewsRouter.post("/:productId/reviews", async (req, res, next) => {
   try {
     const foundProduct = ProductsModel.findById(req.params.productId);
-    if (condition) {
-    } else {
-    }
+    if (foundProduct) {
+      const newReview = new ReviewsModel(req.body);
+      const { _id } = await newReview.save();
+      const updteProduct = await ProductsModel.findByIdAndUpdate(
+        req.params.productId,
+        { $push: { reviews: _id } },
+        { new: true, runValidators: true }
+      );
 
-    const newReview = new ReviewsModel(req.body);
-    const { _id } = await newReview.save();
-    res.status(201).send({ _id });
+      res.status(201).send({ NewReview: _id, updtedProduct: updteProduct });
+    } else {
+      createHttpError(
+        404,
+        `Product with the id: ${req.params.productId} not found!`
+      );
+    }
   } catch (error) {
     next(error);
   }

@@ -20,14 +20,14 @@ const productsSchema = new Schema(
 );
 
 productsSchema.static("findProductsWithReviews", async function (query) {
-  const product = await this.find(query.criteria, query.options.fields)
+  const products = await this.find(query.criteria, query.options.fields)
     .limit(query.options.limit)
     .skip(query.options.skip)
     .sort(query.options.sort)
     .populate({ path: "reviews", select: "comment rate" });
   const total = await this.countDocuments(query.criteria);
 
-  return { product, total };
+  return { products, total };
 });
 
 export default model("Product", productsSchema);
