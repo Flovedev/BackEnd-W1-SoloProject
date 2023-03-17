@@ -1,8 +1,11 @@
 import Express from "express";
+import createHttpError from "http-errors";
+import mongoose from "mongoose";
+import ReviewsModel from "./model.js";
+import ProductsModel from "../products/model.js";
 import uniqid from "uniqid";
 import { checkReviewsSchema, triggerBadRequest } from "./validation.js";
 import { getReviews, writeReviews, getProducts } from "../../lib/fs-tools.js";
-import createHttpError from "http-errors";
 
 const reviewsRouter = Express.Router();
 
@@ -62,44 +65,21 @@ reviewsRouter.get("/:productId/reviews/:reviewId", async (req, res, next) => {
   }
 });
 
-reviewsRouter.post(
-  "/:productId/reviews",
-  checkReviewsSchema,
-  triggerBadRequest,
-  async (req, res, next) => {
-    try {
-      const productsArray = await getProducts();
-      const foundProduct = productsArray.find(
-        (e) => e._id === req.params.productId
-      );
-      if (foundProduct) {
-        const newReview = {
-          ...req.body,
-          _id: uniqid(),
-          productId: req.params.productId,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        };
-        const reviewsArray = await getReviews();
-        reviewsArray.push(newReview);
-        await writeReviews(reviewsArray);
-
-        res.status(201).send({
-          Created: `Review created for the productId: ${req.params.productId}`,
-        });
-      } else {
-        next(
-          createHttpError(
-            404,
-            `Product with the id: ${req.params.id} not found!`
-          )
-        );
-      }
-    } catch (error) {
-      next(error);
+reviewsRouter.post("/:productId/reviews", async (req, res, next) => {
+  try {
+    const foundProduct = ProductsModel.findById(req.params.productId);
+    if (condition) {
+    } else {
     }
+
+    const newReview = new ReviewsModel(req.body);
+    const { _id } = await newReview.save();
+    res.status(201).send({ _id });
+  } catch (error) {
+    next(error);
   }
-);
+});
+
 reviewsRouter.put(
   "/:productId/reviews/:reviewId",
   checkReviewsSchema,

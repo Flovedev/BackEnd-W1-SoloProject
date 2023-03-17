@@ -1,6 +1,7 @@
 import Express from "express";
 import listEndpoints from "express-list-endpoints";
 import cors from "cors";
+import mongoose from "mongoose";
 import { join } from "path";
 import productsRouter from "./api/products/index.js";
 import reviewsRouter from "./api/reviews/index.js";
@@ -13,6 +14,7 @@ import {
   checkRequests,
 } from "./errorsHandlers.js";
 import dotenv from "dotenv";
+import createHttpError from "http-errors";
 
 dotenv.config();
 
@@ -23,22 +25,23 @@ const whitelist = [process.env.FE_DEV_URL, process.env.FE_PROID_URL];
 
 server.use(checkRequests);
 server.use(Express.static(publicFolderPath));
-server.use(
-  cors({
-    origin: (currentOrigin, corsNext) => {
-      if (currentOrigin || whitelist.indexOf(currentOrigin) !== -1) {
-        corsNext(null, true);
-      } else {
-        corsNext(
-          createHttpError(
-            400,
-            `Origin ${currentOrigin} is not in the whitelist!`
-          )
-        );
-      }
-    },
-  })
-);
+server.use(cors());
+// server.use(
+//   cors({
+//     origin: (currentOrigin, corsNext) => {
+//       if (currentOrigin || whitelist.indexOf(currentOrigin) !== -1) {
+//         corsNext(null, true);
+//       } else {
+//         corsNext(
+//           createHttpError(
+//             400,
+//             `Origin ${currentOrigin} is not in the whitelist!`
+//           )
+//         );
+//       }
+//     },
+//   })
+// );
 server.use(Express.json());
 
 server.use("/products", productsRouter);
@@ -50,7 +53,12 @@ server.use(unauthorizedHandler);
 server.use(notfoundHandler);
 server.use(genericErrorHandler);
 
-server.listen(port, () => {
-  console.table(listEndpoints(server));
-  console.log(`Server is running in port ${process.env.PORT}`);
+mongoose.connect(process.env.MONGO_URL);
+
+mongoose.connection.on("connected", () => {
+  console.log("✅ Successfully connected to Mongo!");
+  server.listen(port, () => {
+    // console.table(listEndpoints(server));
+    console.log(`✅ Server is running on port ${port}`);
+  });
 });

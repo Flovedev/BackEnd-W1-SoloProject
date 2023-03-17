@@ -23,7 +23,7 @@ const productSchema = {
   },
   price: {
     in: ["body"],
-    isNumber: {
+    isNumeric: {
       errorMessage: "Price is a mandatory field and needs to be a number!",
     },
   },
